@@ -885,6 +885,8 @@ Sources/MobiusApp/        SwiftUI 메뉴바 앱 + AppState + Views/ + LoginFlow 
     증상이 사라지지만 fatalError 자체는 남는다. 접근자에 의존하지 말고 탐색기만 쓴다.
     ★ make-app.sh의 `DEVID_HASH=$(… | grep "Developer ID Application" | …)`는 인증서 없는 Mac에서
     `pipefail`로 스크립트를 조용히 죽였다(ad-hoc 폴백에 못 감) — `{ grep … || true; }`로 고침.
+    make-dmg.sh의 `DEVID=$(…)`도 같은 줄이라 인증서 없는 Mac에서 DMG를 만들지 않고 exit 1로 끝났다
+    (실측: 출력 없이 종료, dist에 DMG 없음) — 같은 방식으로 고침.
     ★ **실측(macOS 26.6.2 25G83, 제보와 같은 환경)**: 패키징된 앱을 격리 환경(`MOBIUS_HOME` 빈
     디렉터리, `-appLanguage <lang>` 런치 인자)으로 띄우고 AppleScript(System Events)로 메뉴바 아이콘
     클릭 → 팝오버, ⌘, → 설정 창을 열어 접근성 트리를 읽었다. en("No accounts registered" / "Mobius

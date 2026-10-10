@@ -25,7 +25,9 @@ VERSION=$(/usr/libexec/PlistBuddy -c "Print :CFBundleShortVersionString" "$APP/C
 DMG="dist/Mobius-$VERSION.dmg"
 
 # 공증 가능 여부 = Developer ID Application 인증서 존재 (make-app.sh의 서명 분기와 동일 기준)
-DEVID=$(security find-identity -v -p codesigning | grep "Developer ID Application" | head -1 | awk '{print $2}')
+# grep returns 1 when nothing matches, and pipefail then kills the script silently before the DMG
+# is built. Macs without a Developer ID certificate must still reach the non-notarized path below.
+DEVID=$(security find-identity -v -p codesigning | { grep "Developer ID Application" || true; } | head -1 | awk '{print $2}')
 
 # 공증 헬퍼: $1 경로(zip 또는 dmg)를 제출하고 Accepted가 아니면 로그 안내 후 종료
 notarize() {
