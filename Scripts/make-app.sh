@@ -26,7 +26,7 @@ RES_BUNDLE="$APP/Contents/Resources/Mobius_MobiusApp.bundle"
 cp -R .build/release/Mobius_MobiusApp.bundle "$RES_BUNDLE"
 # Check 1: the bundle must contain Localizable.strings for each translated language. The layout
 # depends on the build system (swiftbuild: Contents/Resources/<lang>.lproj, native: <lang>.lproj).
-for lang in en ja; do
+for lang in en ja pt es; do
   if [ -z "$(find "$RES_BUNDLE" -path "*/$lang.lproj/Localizable.strings" -print -quit)" ]; then
     echo "ERROR: $RES_BUNDLE has no $lang.lproj/Localizable.strings; the resource bundle is broken." >&2
     exit 1

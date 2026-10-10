@@ -1089,6 +1089,10 @@ Sources/MobiusApp/        SwiftUI 메뉴바 앱 + AppState + Views/ + LoginFlow 
   버튼 클릭 시 크래시. 당시엔 Fairy 링크로 교체하며 리소스 로딩 자체를 제거해 증상만 없앴고, 원인은
   **실패 기록 26**(native 빌드 접근자가 앱 루트와 빌드 Mac의 `.build` 절대 경로만 봄)으로 규명. 앱의
   번들 리소스는 `Bundle.module` 대신 `ResourceBundleLocator`로만 연다(make-app.sh가 검사).
+- **UI 언어 pt·es 추가(2026-10-10, 포크)**: `pt.lproj`(pt-BR)·`es.lproj`(중립 스페인어), 설정 언어 목록에
+  Português/Español. "시스템"이면 macOS 선호 언어의 앞 두 글자로 ko/en/ja/pt/es를 고르고 없으면 en.
+  번역에 없는 키는 **영어로 먼저 폴백**하고 그다음 한국어 원문(`loc`). make-app.sh 검증 1이 네 언어
+  (en/ja/pt/es)의 `Localizable.strings`를 확인한다. 키를 추가할 때는 다섯 파일을 함께 갱신할 것.
 - 후속 후보: accounts.json 파일 락, 세션 로그 기반 인증 에러 감지, Codex 재로그인 감지,
   usage `limits[]`의 모델 스코프 주간 한도(weekly_scoped) 게이지 노출.
 - **모델 전용 한도(weekly_scoped/Fable) 처리(이슈 #19 PR에 포함, 2026-08-15)**: 계정 한도와

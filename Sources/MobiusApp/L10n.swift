@@ -1,11 +1,12 @@
 import Foundation
 import MobiusCore
 
-/// 앱 UI 다국어. 키 = 한국어 원문 — 번역이 없으면 한국어로 폴백한다.
-/// "system"이면 macOS 선호 언어를 따르고(ko/en/ja 매칭, 없으면 en), 아니면 지정 언어 고정.
+/// 앱 UI 다국어. 키 = 한국어 원문.
+/// "system"이면 macOS 선호 언어를 따르고(ko/en/ja/pt/es 매칭, 없으면 en), 아니면 지정 언어 고정.
+/// Missing translations fall back to English first, then to the Korean source text.
 enum L10n {
-    static let defaultsKey = "appLanguage" // "system" | "ko" | "en" | "ja"
-    static let supported = ["ko", "en", "ja"]
+    static let defaultsKey = "appLanguage" // "system" | "ko" | "en" | "ja" | "pt" | "es"
+    static let supported = ["ko", "en", "ja", "pt", "es"]
 
     static var current: String {
         UserDefaults.standard.string(forKey: defaultsKey) ?? "system"
@@ -54,12 +55,23 @@ enum L10n {
         cachedBundle = b
         return b
     }
+
+    /// English sub-bundle, used as the fallback for keys a translation does not have yet.
+    private static let cachedEnglish: Bundle? =
+        resourceBundle?.path(forResource: "en", ofType: "lproj").flatMap(Bundle.init(path:))
+
+    static func englishBundle() -> Bundle? { cachedEnglish }
 }
 
 /// 모든 사용자 노출 문자열은 이 함수를 거친다. 키가 곧 한국어 원문.
 func loc(_ key: String) -> String {
     guard let b = L10n.bundle() else { return key }
-    return b.localizedString(forKey: key, value: key, table: nil)
+    let value = b.localizedString(forKey: key, value: key, table: nil)
+    // A key missing from pt/es/ja would otherwise show Korean; prefer English.
+    if value == key, let en = L10n.englishBundle(), en !== b {
+        return en.localizedString(forKey: key, value: key, table: nil)
+    }
+    return value
 }
 
 /// 포맷 인자 버전 — 키는 %@/%d 포함 한국어 포맷 문자열.

@@ -1,0 +1,227 @@
+/* Mobius — Português (Brasil). 키는 한국어 원문. */
+
+/* AppState — 알림/오류 */
+"계정 목록 로드 실패: %@" = "Falha ao carregar as contas: %@";
+"전환 가능한 계정이 없습니다. 리셋을 기다려주세요." = "Nenhuma conta disponível para alternar. Aguarde a renovação do limite.";
+"모델 한도 — 자동 전환이 꺼져 있습니다" = "Limite do modelo — a troca automática está desativada";
+"%@ 계정에서 이 모델만 한도에 걸렸어요. 계정은 다른 모델로 계속 쓸 수 있어요." = "Somente este modelo atingiu o limite na conta %@. Você ainda pode usar a conta com outros modelos.";
+"한도 소진 — 자동 전환이 꺼져 있습니다" = "Limite atingido — a troca automática está desativada";
+"%@ 계정이 한도에 도달했습니다. 수동으로 전환하세요." = "A conta %@ atingiu o limite. Troque manualmente.";
+"✅ %@ 계정으로 복귀했어요" = "✅ De volta à conta %@";
+"한도가 초기화돼 주 계정으로 돌아왔어요. %@" = "Seu limite foi renovado e você voltou para a conta principal. %@";
+"🔄 %@ 계정으로 전환했어요" = "🔄 Conta alterada para %@";
+"%@ 계정에서 이 모델의 한도에 걸려 %@(으)로 옮겼어요. %@" = "Este modelo atingiu o limite na conta %@, então mudamos para %@. %@";
+"%@ 한도 소진 → %@. %@" = "%@ atingiu o limite → %@. %@";
+"실행 중인 세션도 다음 입력부터 새 계정으로 이어져요." = "As sessões abertas passam a usar a nova conta no seu próximo comando.";
+"실행 중인 codex 세션은 종료해야 새 계정이 적용돼요." = "Feche as sessões do codex em execução para que a nova conta seja aplicada.";
+"자동 전환 실패: %@" = "Falha na troca automática: %@";
+"전환 실패: %@" = "Falha ao alternar: %@";
+"Desktop 전환이 진행 중입니다 — 이번 전환에서는 Desktop을 건너뜁니다." = "Já há uma troca do Desktop em andamento — o Desktop será ignorado desta vez.";
+"Desktop 전환 실패(CLI는 전환됨): %@" = "Falha na troca do Desktop (a CLI foi alternada): %@";
+"Claude Desktop 자동 연결됨" = "Claude Desktop conectado automaticamente";
+"%@ 계정의 Desktop 세션을 저장했어요. 이제 전환하면 자동으로 이어집니다." = "A sessão do Desktop da conta %@ foi salva. Agora, ao alternar, ela será usada automaticamente.";
+"Desktop 자동 캡처 실패: %@" = "Falha na captura automática do Desktop: %@";
+"Primary 변경 실패: %@" = "Falha ao alterar a conta principal: %@";
+"Claude Code CLI가 필요합니다 — 설정에서 설치하세요." = "A CLI do Claude Code é necessária — instale-a em Configurações.";
+"Claude Code CLI 필요" = "CLI do Claude Code necessária";
+"계정 추가 완료" = "Conta adicionada";
+"기존 계정 자격증명 갱신됨" = "Credenciais da conta existente atualizadas";
+"계정 추가 실패" = "Falha ao adicionar a conta";
+"먼저 이 계정으로 전환한 뒤 Claude Desktop을 연결하세요." = "Alterne primeiro para esta conta e depois conecte o Claude Desktop.";
+"Claude Desktop이 설치되어 있지 않습니다." = "O Claude Desktop não está instalado.";
+"Claude Desktop 재실행 실패 — 업데이트 적용 중일 수 있어요. 잠시 후 수동으로 실행해주세요." = "Falha ao reabrir o Claude Desktop — uma atualização pode estar sendo instalada. Abra-o manualmente em instantes.";
+"Desktop 로그아웃 실패: %@" = "Falha ao sair do Desktop: %@";
+"Claude Desktop 재실행 실패 — 업데이트 적용 중일 수 있어요. 잠시 후 다시 시도해주세요." = "Falha ao reabrir o Claude Desktop — uma atualização pode estar sendo instalada. Tente novamente em instantes.";
+"Claude Desktop 로그아웃에 실패했어요. 잠시 후 다시 시도하거나, Desktop을 완전히 종료한 뒤 다시 연결해주세요." = "Não foi possível sair do Claude Desktop. Tente novamente em instantes ou feche o Desktop por completo e conecte de novo.";
+"5분 안에 로그인이 감지되지 않았습니다. 다시 시도해주세요." = "Nenhum login foi detectado em 5 minutos. Tente novamente.";
+"아직 로그인이 감지되지 않았어요. Claude Desktop에서 로그인을 마친 뒤 다시 저장을 눌러주세요." = "Nenhum login detectado ainda. Conclua o login no Claude Desktop e toque em Salvar novamente.";
+"Desktop 스냅샷 저장" = "Snapshot do Desktop salvo";
+"%@ 전환 시 Claude Desktop도 함께 전환됩니다." = "O Claude Desktop agora será alternado junto com %@.";
+"저장 실패: %@" = "Falha ao salvar: %@";
+
+/* ClaudeCLI / LoginFlow / DesktopCoordinator */
+"설치 프로세스를 시작하지 못했습니다." = "Não foi possível iniciar o instalador.";
+"설치 실패 (코드 %d). %@" = "Falha na instalação (código %d). %@";
+"이전 Desktop 전환이 아직 진행 중입니다." = "Uma troca anterior do Desktop ainda está em andamento.";
+"claude CLI를 찾지 못했어요. 설치를 확인하거나, 터미널에서 `claude auth login`으로 로그인한 뒤 `mobius capture <이름>`으로 계정을 등록하세요." = "Não foi possível encontrar a CLI do claude. Verifique se ela está instalada ou faça login com `claude auth login` no terminal e registre a conta com `mobius capture <nome>`.";
+"로그인 URL을 얻지 못했습니다. 터미널에서 `claude auth login`으로 로그인한 뒤 `mobius capture <이름>`으로 계정을 등록하세요." = "Não foi possível obter a URL de login. Faça login com `claude auth login` no terminal e registre a conta com `mobius capture <nome>`.";
+"로그인 대기 시간이 초과되었습니다. 다시 시도해주세요." = "Tempo de login esgotado. Tente novamente.";
+"로그인이 취소되었습니다." = "O login foi cancelado.";
+
+/* SettingsView */
+"확인 중…" = "Verificando…";
+"Mobius는 Claude Code CLI로 계정을 로그인·전환합니다. 아래 버튼으로 공식 설치 스크립트를 실행하세요 (관리자 권한 불필요)." = "O Mobius faz login e alterna contas por meio da CLI do Claude Code. Execute o script oficial de instalação com o botão abaixo (não requer permissão de administrador).";
+"설치 중…" = "Instalando…";
+"Claude Code 설치" = "Instalar o Claude Code";
+"설치 스크립트를 내려받아 실행 중입니다… (최대 1~2분)" = "Baixando e executando o script de instalação… (até 1–2 min)";
+"설치 완료! 이제 계정을 추가할 수 있어요." = "Instalado! Agora você já pode adicionar contas.";
+"아직 등록된 계정이 없어요" = "Nenhuma conta ainda";
+"Fallback 계정을 추가해 보세요" = "Experimente adicionar uma conta de reserva";
+"아래 **설치 현황**의 **계정 추가** 버튼으로 Claude 계정을 등록하세요. 개인·회사 계정을 함께 등록해 두면, 한 계정의 사용량이 차는 순간 다음 계정으로 알아서 전환됩니다." = "Cadastre suas contas do Claude com o botão **Adicionar conta** em **Ferramentas instaladas**, logo abaixo. Cadastre contas pessoais e de trabalho juntas, e o Mobius alterna para a próxima assim que uma conta atingir o limite.";
+"지금은 계정이 하나뿐이라 사용량이 차면 기다리는 수밖에 없어요. 아래 **설치 현황**의 **계정 추가**로 계정을 하나 더 등록하면, 한도가 차는 순간 자동으로 이어서 쓸 수 있습니다." = "Com apenas uma conta, você só pode esperar quando o limite for atingido. Adicione outra em **Adicionar conta**, em **Ferramentas instaladas** abaixo, e o Mobius continua automaticamente assim que o limite for atingido.";
+"일반" = "Geral";
+"업데이트" = "Atualizações";
+"현재 버전" = "Versão atual";
+"하루 한 번 자동 확인" = "Verificar automaticamente uma vez por dia";
+"지금 확인" = "Verificar agora";
+"최신 버전입니다" = "Você está na versão mais recente";
+"새 버전 v%@ 받기" = "Baixar v%@";
+"확인 실패 — 네트워크를 확인해주세요" = "Falha na verificação — confira sua conexão";
+"새 버전이 나왔어요" = "Há uma nova versão";
+"Mobius v%@ — 설정에서 업데이트를 확인하세요." = "Mobius v%@ — abra as Configurações para atualizar.";
+"언어" = "Idioma";
+"시스템 기본" = "Padrão do sistema";
+"로그인 시 자동 시작" = "Abrir ao iniciar sessão";
+"실패: %@" = "Falha: %@";
+"사용량 게이지 표시" = "Mostrar indicadores de uso";
+"계정 카드에 5시간·주간 사용량과 초기화 남은 시간을 표시합니다" = "Mostra nos cartões das contas o uso de 5 horas e semanal e o tempo restante para a renovação";
+"자동 전환" = "Troca automática";
+"한도가 차면 다음 계정으로 자동으로 이어집니다" = "Ao atingir o limite, o Mobius continua automaticamente na próxima conta";
+"계정 전환 시 Claude Desktop도 전환" = "Alternar também o Claude Desktop ao trocar de conta";
+"자동 전환 시에도 Claude Desktop 전환" = "Alternar também o Claude Desktop na troca automática";
+"언제" = "Quando";
+"하는 일" = "O que faz";
+"한도가 차서 Mobius가 알아서 계정을 바꿀 때" = "Quando o Mobius troca de conta sozinho após atingir o limite";
+"카드를 눌러 직접 계정을 바꿀 때" = "Quando você troca de conta tocando em um cartão";
+"Claude Desktop도 같은 계정으로 재시작해요 (2~5초)" = "O Claude Desktop também reinicia com a mesma conta (2–5 s)";
+"카드를 눌러 직접 바꿀 때는 '계정 전환 시 Claude Desktop도 전환'이 담당해요." = "As trocas manuais são cobertas por 'Alternar também o Claude Desktop ao trocar de conta'.";
+"자동 전환일 때는 '자동 전환 시에도 Claude Desktop 전환'이 담당해요. Desktop에 연결해 둔 계정에서만 동작해요." = "As trocas automáticas são cobertas por 'Alternar também o Claude Desktop na troca automática'. Funciona apenas com contas conectadas ao Desktop.";
+
+/* 실험실 — 여러 Mac 동기화 */
+"실험실" = "Laboratório";
+"다른 Mac과 동기화" = "Sincronizar com outros Macs";
+"이 Mac에서 켠 항목만 동기화에 참여해요. 끄면 이 Mac은 아무 영향도 받지 않아요." = "Somente os itens ativados neste Mac participam da sincronização. Se você desativar, este Mac não será afetado.";
+"🔒 **로그인 정보는 옮기지 않아요** — 계정 자격증명, 계정 목록, 비밀 토큰은 어떤 경우에도 동기화되지 않습니다. 옮겨지는 건 대화 기록·플랜·스킬 같은 작업 데이터뿐이에요." = "🔒 **Seus logins nunca são transferidos** — credenciais de contas, a lista de contas e tokens secretos jamais são sincronizados, em nenhuma circunstância. Apenas dados de trabalho, como conversas, planos e skills, são transferidos.";
+"보관 위치" = "Local de armazenamento";
+"직접 선택한 폴더" = "Pasta personalizada";
+"폴더가 선택되지 않았어요" = "Nenhuma pasta selecionada";
+"다른 폴더 선택…" = "Escolher outra pasta…";
+"이 폴더 사용" = "Usar esta pasta";
+"대화 기록" = "Histórico de conversas";
+"다른 Mac에서 대화를 이어서 할 수 있어요 — 사용자명이 달라도 괜찮아요. 처음 한 번은 오래 걸려요." = "Continue suas conversas em outro Mac — mesmo com nome de usuário diferente. A primeira sincronização demora um pouco.";
+"플랜 문서" = "Documentos de plano";
+"작성해 둔 계획 파일을 함께 봐요." = "Compartilhe os arquivos de plano que você escreveu.";
+"스킬" = "Skills";
+"직접 만든 스킬을 모든 Mac에서 써요." = "Use suas skills personalizadas em todos os Macs.";
+"글로벌 메모리 (CLAUDE.md)" = "Memória global (CLAUDE.md)";
+"Claude가 배워 둔 내용을 함께 써서, 어느 Mac에서든 똑같이 똑똑해져요." = "Compartilhe o que o Claude aprendeu, para que ele seja igualmente esperto em qualquer Mac.";
+"플러그인 목록" = "Lista de plugins";
+"어떤 플러그인을 쓰는지 목록만 맞춰요. 실제 파일은 각 Mac이 알아서 다시 내려받아요." = "Apenas a lista de plugins que você usa é sincronizada. Cada Mac baixa os arquivos por conta própria.";
+"한쪽 Mac에서 지우면" = "Quando um Mac apagar um arquivo";
+"다른 Mac에는 남겨두기" = "Manter nos outros Macs";
+"다른 Mac에서도 지우기" = "Apagar nos outros Macs também";
+"지운 파일이 다른 Mac에서는 그대로 유지돼요. 가장 안전한 선택이에요." = "Os arquivos apagados permanecem intactos nos seus outros Macs. A opção mais segura.";
+"다른 Mac에서는 바로 지워지지 않고 휴지통 폴더로 옮겨져 30일간 보관돼요." = "Os outros Macs movem o arquivo para uma pasta de lixeira em vez de apagá-lo e o mantêm por 30 dias.";
+"지금 동기화" = "Sincronizar agora";
+"동기화하는 중…" = "Sincronizando…";
+"동기화됨 · 올림 %d · 받음 %d" = "Sincronizado · enviados %d · recebidos %d";
+"동기화하지 못했어요 — %@" = "Não foi possível sincronizar — %@";
+"동기화할 항목을 하나 이상 켜주세요" = "Ative ao menos um item para sincronizar";
+"보관 위치에 접근할 수 없어요" = "Não foi possível acessar o local de armazenamento";
+"홈 폴더 안 프로젝트는 Mac마다 사용자명이 달라도 대화를 이어 쓸 수 있어요. 홈 밖 경로는 두 Mac의 경로가 같아야 해요." = "Projetos dentro da sua pasta pessoal continuam entre Macs mesmo com nomes de usuário diferentes. Caminhos fora dela precisam ser iguais nos dois Macs.";
+
+"설치" = "Instalar";
+"번들에서 mobius 바이너리를 찾을 수 없습니다 (개발 빌드에서는 Scripts/install-cli.sh 사용)" = "Não foi possível encontrar o binário do mobius no bundle (em builds de desenvolvimento, use Scripts/install-cli.sh)";
+"설치 실패: %@" = "Falha na instalação: %@";
+
+/* DesktopCaptureSheet */
+"Desktop 연결" = "Conectar o Desktop";
+"Claude Desktop을 로그아웃하고 다시 엽니다" = "Saindo do Claude Desktop e reabrindo-o";
+"%@ 계정으로 로그인하세요" = "Faça login com a conta %@";
+"로그인이 감지되면 자동으로 저장됩니다" = "Salvo automaticamente quando o login for detectado";
+"저장 완료 — 이제 전환 시 Desktop도 함께 전환됩니다." = "Salvo — o Desktop agora será alternado junto com a conta.";
+"Claude Desktop이 로그아웃되고 다시 열렸습니다. 그 창에서 **%@** 계정으로 로그인하면 자동으로 저장됩니다." = "O Claude Desktop saiu da conta e foi reaberto. Faça login nele com **%@** e a conta será salva automaticamente.";
+"이 계정" = "esta conta";
+"닫기" = "Fechar";
+"취소" = "Cancelar";
+
+/* AccountCardView */
+"재로그인 필요" = "Novo login necessário";
+"다시 로그인" = "Entrar novamente";
+"%@ 계정의 인증이 만료됐어요. 카드의 '다시 로그인'을 눌러주세요." = "A autenticação da conta %@ expirou. Toque em 'Entrar novamente' no cartão dela.";
+"%@ 계정의 로그인이 만료됐어요. 카드의 '다시 로그인'을 눌러주세요." = "O login da conta %@ expirou. Toque em 'Entrar novamente' no cartão dela.";
+"%@ 계정에 다른 조직의 로그인이 저장돼 있었어요. 카드의 '다시 로그인'으로 이 조직에 다시 로그인해 주세요." = "A conta %@ tinha o login de outra organização salvo. Use 'Entrar novamente' no cartão dela para entrar nesta organização.";
+"%@ 계정이 다른 카드와 같은 로그인을 나눠 쓰고 있었어요. 카드의 '다시 로그인'으로 이 조직에 다시 로그인해 주세요." = "A conta %@ estava compartilhando o mesmo login com outro cartão. Use 'Entrar novamente' no cartão dela para entrar nesta organização.";
+"이 카드에는 다른 조직의 로그인이 저장돼 있어 전환하지 않았어요. 카드의 '다시 로그인'을 눌러 주세요." = "Este cartão tem o login de outra organização salvo, por isso o Mobius não alternou. Toque em 'Entrar novamente' no cartão.";
+"%@ 계정의 로그인이 만료돼 전환을 건너뛰었어요. '다시 로그인'을 눌러주세요." = "O login da conta %@ expirou, então a troca foi ignorada. Toque em 'Entrar novamente'.";
+"인증 확인 필요" = "Verifique o login";
+"%@ 계정의 사용량 조회가 계속 거부되고 있어요. 로그인이 만료됐을 수 있으니 카드의 '다시 로그인'을 눌러주세요." = "As consultas de uso da conta %@ continuam sendo recusadas. O login pode ter expirado — toque em 'Entrar novamente' no cartão dela.";
+"다운로드 중…" = "Baixando…";
+"Primary 계정으로 설정" = "Definir como conta principal";
+"Claude Desktop 다시 연결" = "Reconectar o Claude Desktop";
+"Claude Desktop 연결" = "Conectar o Claude Desktop";
+"이 계정으로 전환한 뒤 연결할 수 있어요" = "Alterne para esta conta primeiro para conectar";
+"계정 삭제" = "Excluir conta";
+"모델 한도 · %@ 초기화" = "Limite do modelo · renova %@";
+"한도 소진 · %@ 초기화" = "Limite atingido · renova %@";
+"5시간" = "5h";
+"주간" = "Semanal";
+"%@ 초기화" = "Renova %@";
+"%d일 %d시간 후" = "em %dd %dh";
+"%d시간 %d분 후" = "em %dh %dmin";
+"%d분 후" = "em %dmin";
+"%d일 %d시간 전" = "há %dd %dh";
+"%d시간 %d분 전" = "há %dh %dmin";
+"%d분 전" = "há %dmin";
+"%@ 값" = "em %@";
+"%@ 값 · 조회 제한 중, %@ 다시 조회" = "em %@ · limite de consultas atingido, nova consulta %@";
+"조회 제한 중, %@ 다시 조회" = "Limite de consultas atingido, nova consulta %@";
+
+/* AccountListView */
+"뫼비우스" = "";
+"계정 추가" = "Adicionar conta";
+"Claude 계정 추가" = "Adicionar conta do Claude";
+"설정에서 추가 (Codex 포함)" = "Adicionar em Configurações (inclui Codex)";
+"삭제" = "Excluir";
+"등록된 계정이 없습니다" = "Nenhuma conta cadastrada";
+"설정(⚙)의 설치 현황에서 계정을 추가하세요" = "Adicione contas em Configurações (⚙) → Ferramentas instaladas";
+"설정" = "Configurações";
+"종료" = "Sair";
+
+/* Codex 지원 (프로바이더별 풀) */
+"%@ 모든 계정 한도 소진" = "Todas as contas do %@ atingiram o limite";
+"터미널에서 `codex logout` 후 `codex login`으로 추가할 계정에 로그인하면, Mobius가 몇 초 안에 자동으로 등록합니다." = "No terminal, execute `codex logout` e depois `codex login` com a conta que deseja adicionar — o Mobius a cadastra automaticamente em poucos segundos.";
+"지금 쓰던 계정은 이미 카드에 저장돼 있어 카드를 눌러 언제든 되돌아올 수 있어요." = "Sua conta atual já está salva em um cartão, então você pode voltar a ela a qualquer momento tocando nele.";
+"%@ 활성 계정이 밖에서 바뀌었어요" = "A conta ativa do %@ foi alterada externamente";
+"외부 로그인 또는 실행 중 세션의 갱신으로 활성 계정이 %@(으)로 바뀌었습니다. 카드를 눌러 되돌릴 수 있어요." = "Um login externo ou a renovação do token de uma sessão em execução alterou a conta ativa para %@. Toque em um cartão para voltar.";
+"구버전이 저장한 계정 목록에서 프로바이더 정보가 소실돼 복구했습니다: %@" = "Recuperamos informações do provedor que uma versão anterior havia perdido da lista de contas: %@";
+"codex 사용 후 사용량이 표시돼요" = "O uso aparece depois que você usar o codex";
+
+/* 설치 현황 / mobius 명령어 관리 */
+"설치 현황" = "Ferramentas instaladas";
+"설치 안 됨" = "Não instalado";
+"재설치" = "Reinstalar";
+"설치 완료: %@" = "Instalado: %@";
+"삭제 완료" = "Removido";
+"삭제 실패: %@" = "Falha ao remover: %@";
+"계정을 추가하려면 먼저 Claude Code CLI를 설치하세요. 설정 → 설치 현황에서 설치할 수 있어요." = "Instale primeiro a CLI do Claude Code para adicionar contas. Você pode instalá-la em Configurações → Ferramentas instaladas.";
+
+/* 팝오버 프로바이더 탭 */
+"전체" = "Todos";
+"Codex는 터미널로 추가해요" = "Adicione o Codex pelo terminal";
+"%@ 자동 전환" = "Troca automática do %@";
+"사용 중" = "Em uso";
+"Codex용 실험 기능은 아직 없어요." = "Ainda não há recursos experimentais para o Codex.";
+
+/* 후원 */
+"후원" = "Apoiar";
+"Mobius가 도움이 됐다면" = "Gostando do Mobius?";
+"커피 한 잔으로 개발을 응원해 주세요 — Mobius는 계속 무료 오픈소스로 만들어갑니다." = "Apoie o desenvolvimento com um cafezinho — o Mobius continua gratuito e de código aberto.";
+"Fairy에서 응원하기" = "Apoiar no Fairy";
+"카카오페이 QR" = "QR do KakaoPay";
+"커피 한 잔의 응원, 고마워요 ☕" = "Obrigado pelo apoio de um cafezinho ☕";
+"휴대폰 카메라나 카카오페이 앱으로\nQR 코드를 스캔해 주세요." = "Escaneie o QR code com a câmera do celular\nou com o app KakaoPay.";
+"스캔하면 카카오페이 송금 화면으로 이어져요." = "Ao escanear, a tela de transferência do KakaoPay será aberta.";
+
+/* 임계값 선제 알림 (advisory) — 설정/카드/알림 */
+"한도 근접" = "Perto do limite";
+"5시간 사용량이 설정한 비율에 이르면" = "Quando o uso de 5 horas atingir o nível definido";
+"한도 차기 전 미리 전환" = "Trocar antes de atingir o limite";
+"한도가 다 차기 전에 여유 있는 다음 계정으로 미리 전환해요" = "Alterna para a próxima conta com folga antes de o limite se esgotar";
+"꺼도 한도가 100% 차면 평소처럼 자동 전환돼요. 켜면 약 5분마다 사용량을 확인합니다." = "Mesmo desativado, o Mobius continua alternando automaticamente quando o uso chega a 100%. Quando ativado, o uso é verificado a cada 5 minutos, aproximadamente.";
+"⚠️ %@ 계정 한도가 가까워요" = "⚠️ A conta %@ está perto do limite";
+"%@ 계정이 설정한 임계값에 도달했어요. 자동 전환이 꺼져 있으니 필요하면 직접 전환하세요." = "A conta %@ atingiu o limite definido por você. A troca automática está desativada, então alterne manualmente se precisar.";
+"🔄 %@ 계정으로 미리 전환했어요" = "🔄 Conta alterada antecipadamente para %@";
+"%@ 계정이 한도에 가까워져 여유 있는 %@(으)로 미리 전환했어요. %@" = "A conta %@ estava perto do limite, então alternamos antecipadamente para %@, que tem folga. %@";
+"활성 계정 동기화가 계속 실패하고 있어요 — 자동 전환·배지가 잠시 지연될 수 있어요." = "A sincronização da conta ativa continua falhando — a troca automática e os selos podem atrasar um pouco.";
+"%@ 계정의 세션이 도는데 로그인이 만료된 채예요. 카드의 '다시 로그인'을 눌러주세요." = "A conta %@ tem uma sessão ativa, mas o login expirou. Toque em \"Entrar novamente\" no cartão.";

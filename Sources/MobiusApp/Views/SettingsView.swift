@@ -338,6 +338,8 @@ struct SettingsView: View {
                     Text("한국어").tag("ko")
                     Text("English").tag("en")
                     Text("日本語").tag("ja")
+                    Text("Português").tag("pt")
+                    Text("Español").tag("es")
                 }
                 Toggle(loc("로그인 시 자동 시작"), isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, on in
