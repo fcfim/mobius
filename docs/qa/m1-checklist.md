@@ -31,3 +31,5 @@
 - [x] **9. Keychain 권한 프롬프트 (리뷰 이월)** — 15초 주기 reconcile의 Keychain 접근이 ad-hoc 재서명 후 권한 프롬프트를 반복시키지 않는지 확인. *(사용자 수동 확인 2026-07-11 — 고정 서명 + security CLI 경유 읽기/쓰기 적용 후 무프롬프트)*
 
 - [x] **10. Desktop 업데이트 스테이징 중 전환 (ShipIt 레이스)** — Claude Desktop에 업데이트가 대기 중일 때 Desktop 전환 토글을 켜고 계정 전환 → `tail -f ~/Library/Caches/com.anthropic.claudefordesktop.ShipIt/ShipIt_stderr.log`에 `App Still Running Error`가 **안 찍히고**, 재실행된 Desktop이 키체인 승인창을 띄우지 않는지 확인. (CLAUDE.md 실패 기록 10) *(사용자 수동 확인 2026-07-11)*
+
+- [ ] **11. 비기본 언어로 팝오버·설정 열기 (이슈 #27 회귀)** — `Scripts/make-app.sh`로 만든 앱을 **빌드하지 않은 다른 Mac**(또는 `.build`를 지운 뒤)에서 실행 → 메뉴바 아이콘 클릭 → 팝오버 열림, 설정 열림, 프로세스 생존. 설정의 언어를 English / 日本語 / 한국어 / 시스템으로 각각 바꿔 같은 확인. 시스템 언어가 ko/en/ja가 아닌 Mac(예: pt-BR)에선 영어로 떠야 한다. `~/Library/Logs/DiagnosticReports/MobiusApp-*.ips`가 새로 생기지 않았는지 확인. (CLAUDE.md 실패 기록 26)

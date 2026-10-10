@@ -858,6 +858,46 @@ Sources/MobiusApp/        SwiftUI 메뉴바 앱 + AppState + Views/ + LoginFlow 
     제한은 우리 호출만 줄여서는 안 풀린다 — 같은 계정의 다른 클라이언트가 함께 쓴다. 우리가 할 일은
     서버가 준 대기 시간을 지키고, 사용자에게 값이 멈춘 **이유**를 보여 주는 것이다.
 
+26. **SwiftPM `Bundle.module` 접근자를 앱에서 써서, 다른 Mac의 릴리스 앱이 en/ja 언어로 팝오버·설정을 여는
+    순간 fatalError로 종료 (이슈 #27, 2026-10-10)** — macOS 26.6.2(Apple Silicon)에서 메뉴바 아이콘을
+    누르자마자 프로세스가 죽는다는 외부 제보. 크래시 리포트 5건 모두 `EXC_BREAKPOINT` →
+    `_assertionFailure` ← `closure #1 in variable initialization expression of static NSBundle.module`
+    ← `L10n.bundle()` ← `AccountListView.header.getter`(또는 `SettingsView.settingsForm.getter`).
+    원인: SwiftPM이 생성하는 `Bundle.module` 접근자는 번들을 못 찾으면 **fatalError**하고, 찾는 자리가
+    빌드 시스템마다 다르다. 0.5.5를 만든 native 빌드 시스템(Swift ≤6.2 기본)의 접근자는
+    `Bundle.main.bundleURL/Mobius_MobiusApp.bundle`(앱 **루트**, `Contents/Resources`가 아님) → 빌드한
+    Mac의 `.build/arm64-apple-macosx/release/Mobius_MobiusApp.bundle` **절대 경로** 두 곳만 본다.
+    make-app.sh는 번들을 `Contents/Resources`에 두므로 첫 후보는 늘 실패하고, 둘째는 개발 Mac에서만
+    존재한다 → 개발 Mac에선 정상, 설치한 Mac에선 종료. 한국어(ko)는 `bundle()`이 접근자를 건드리기
+    전에 nil을 돌려 한국어 개발자는 한 번도 못 봤고, en/ja/비지원 시스템 언어(→en) 사용자만 전원
+    재현. 실측: main의 L10n.swift로 native 빌드한 실행파일에 `strings`로
+    `/Users/<dev>/mobius/.build/.../Mobius_MobiusApp.bundle`과 `could not load resource bundle:`이
+    박혀 있음. (2026-07-16 QR 리소스 크래시 "원인 미규명"과 같은 원인 — 그때 리소스를 지워 증상만 없앴다.)
+    → `MobiusCore/ResourceBundleLocator`가 `Contents/Resources` → 번들 루트 → 실행파일 디렉터리를 순서대로
+    **직접** 탐색하고 없으면 nil(원문 폴백); `L10n`은 `Bundle.module`을 더 쓰지 않는다. make-app.sh에
+    세 가지 검증 추가: 번들 안 en/ja `Localizable.strings` 존재, `Sources/MobiusApp`의 `Bundle.module`
+    사용 금지, 실행파일에 `.build` 절대 경로 금지. 테스트 `ResourceBundleLocatorTests`(앱 레이아웃·평평한
+    레이아웃·전부 없을 때 nil).
+    ★ **빌드 시스템에 따라 번들 레이아웃도 다르다** — swiftbuild(Swift 6.4 기본)는
+    `Mobius_MobiusApp.bundle/Contents/Resources/<lang>.lproj`, native는 `Mobius_MobiusApp.bundle/<lang>.lproj`.
+    `Bundle.path(forResource:ofType:)`는 둘 다 찾으므로 탐색기는 디렉터리 존재만 확인한다.
+    ★ **swiftbuild 접근자는 `Bundle.main.resourceURL`을 먼저 봐서 우연히 동작한다** — 툴체인을 올리면
+    증상이 사라지지만 fatalError 자체는 남는다. 접근자에 의존하지 말고 탐색기만 쓴다.
+    ★ make-app.sh의 `DEVID_HASH=$(… | grep "Developer ID Application" | …)`는 인증서 없는 Mac에서
+    `pipefail`로 스크립트를 조용히 죽였다(ad-hoc 폴백에 못 감) — `{ grep … || true; }`로 고침.
+    ★ **실측(macOS 26.6.2 25G83, 제보와 같은 환경)**: 패키징된 앱을 격리 환경(`MOBIUS_HOME` 빈
+    디렉터리, `-appLanguage <lang>` 런치 인자)으로 띄우고 AppleScript(System Events)로 메뉴바 아이콘
+    클릭 → 팝오버, ⌘, → 설정 창을 열어 접근성 트리를 읽었다. en("No accounts registered" / "Mobius
+    Settings"), ja(言語=日本語), ko(언어=한국어), 시스템(pt-BR Mac → 영어, "System default") 네 경우 모두
+    프로세스 생존, 새 크래시 리포트 없음. 그 밖에 테스트 382개, swiftbuild·native 양쪽으로 make-app.sh
+    통과, main의 L10n으로 되돌리면 make-app.sh가 소스 검사에서 실패하는 것 확인. 셸(sandbox)의
+    `osascript`는 접근성 권한이 없어 실패한다 — 사용자 터미널에서 돌려야 한다.
+    교훈: (1) "개발 Mac에서 정상"은 리소스 경로 버그에 아무 증거가 못 된다 — 접근자가 빌드 디렉터리
+    절대 경로를 폴백으로 품고 있기 때문. 릴리스 실행파일에 `strings`로 빌드 경로가 남았는지 보는 게
+    가장 싼 검증이다. (2) 프로세스를 죽이는 접근자(fatalError)는 "없으면 폴백" 계약을 세울 수 없다 —
+    폴백을 그 **뒤**에 두면 영영 실행되지 않는다. (3) 기본 언어 사용자(ko)만으로 하는 QA는 언어 분기
+    코드를 한 줄도 지나가지 않는다 — 언어 분기는 비기본 언어로 한 번은 열어 봐야 한다.
+
 ## QA / 진행 상황
 
 - `docs/qa/m1-checklist.md` 수동 QA: 2·3·6·7·9·10 완료(2026-07-11). 남은 항목: 1·4·5·8.
@@ -1044,11 +1084,11 @@ Sources/MobiusApp/        SwiftUI 메뉴바 앱 + AppState + Views/ + LoginFlow 
   교차확인해 **진짜 창 소진만 기록하고 창 여유면 무시**(교차확인은 활성 계정 라이브 토큰 사용).
   프리미엄 유지 전환은 P3가 아니라 **모델 스코프 한도(usage scopedLimits/Fable) 소진**을 신뢰
   신호로 삼는 별도 후속. (앞서 'P3=프리미엄 한도'로 오판해 비핀 전환을 넣었다가 이 정정으로 되돌림.)
-- ★ **Bundle.module 번들 리소스가 다른 Mac의 릴리즈 빌드에서 크래시 보고(2026-07-16, 원인
-  미규명)** — v0.3.0 후원 QR(SwiftPM `.copy` 리소스 + `Bundle.module.url`)이 개발 Mac에선
-  정상이었으나 타 Mac에서 버튼 클릭 시 크래시. Fairy 링크로 교체하며 리소스 로딩 자체를
-  제거해 소멸. 앱에서 Bundle.module 리소스를 다시 쓰려면 **릴리즈 DMG를 다른 Mac에서 검증**
-  필수 (Bundle.module 접근자는 번들을 못 찾으면 fatalError한다).
+- ★ **Bundle.module 번들 리소스가 다른 Mac의 릴리즈 빌드에서 크래시 보고(2026-07-16)** —
+  v0.3.0 후원 QR(SwiftPM `.copy` 리소스 + `Bundle.module.url`)이 개발 Mac에선 정상이었으나 타 Mac에서
+  버튼 클릭 시 크래시. 당시엔 Fairy 링크로 교체하며 리소스 로딩 자체를 제거해 증상만 없앴고, 원인은
+  **실패 기록 26**(native 빌드 접근자가 앱 루트와 빌드 Mac의 `.build` 절대 경로만 봄)으로 규명. 앱의
+  번들 리소스는 `Bundle.module` 대신 `ResourceBundleLocator`로만 연다(make-app.sh가 검사).
 - 후속 후보: accounts.json 파일 락, 세션 로그 기반 인증 에러 감지, Codex 재로그인 감지,
   usage `limits[]`의 모델 스코프 주간 한도(weekly_scoped) 게이지 노출.
 - **모델 전용 한도(weekly_scoped/Fable) 처리(이슈 #19 PR에 포함, 2026-08-15)**: 계정 한도와

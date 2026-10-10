@@ -1,4 +1,5 @@
 import Foundation
+import MobiusCore
 
 /// 앱 UI 다국어. 키 = 한국어 원문 — 번역이 없으면 한국어로 폴백한다.
 /// "system"이면 macOS 선호 언어를 따르고(ko/en/ja 매칭, 없으면 en), 아니면 지정 언어 고정.
@@ -28,6 +29,18 @@ enum L10n {
         return "en"
     }
 
+    /// SwiftPM resource bundle name (`<Package>_<Target>`). make-app.sh copies it into
+    /// `Contents/Resources` under this name.
+    static let resourceBundleName = "Mobius_MobiusApp"
+
+    /// Localization resource bundle. **Do not use `Bundle.module`**: that accessor calls fatalError
+    /// when the bundle is missing, and with the native build system (Swift <= 6.2) it only checks the
+    /// app root and the build Mac's absolute `.build` path. Release apps installed on any other Mac
+    /// crashed as soon as they ran in en/ja (issue #27, five crash reports on macOS 26).
+    /// nil when missing, so strings fall back to the Korean source text.
+    private static let resourceBundle: Bundle? =
+        ResourceBundleLocator.locateInMainBundle(named: resourceBundleName)
+
     /// nil = 한국어(키 원문 그대로 사용). en/ja는 해당 lproj 서브번들을 **직접** 연다 —
     /// Bundle.module에 위임하면 CFBundle이 시스템 언어 기준으로 en을 골라버려서
     /// (ko.lproj가 없으므로) 한국어 사용자에게 영어가 나온다 (실측 버그).
@@ -35,8 +48,8 @@ enum L10n {
         let lang = resolvedLang()
         if lang == "ko" { return nil }
         if lang == cachedLang, let b = cachedBundle { return b }
-        guard let path = Bundle.module.path(forResource: lang, ofType: "lproj"),
-              let b = Bundle(path: path) else { return nil } // lproj 없으면 원문 폴백
+        guard let path = resourceBundle?.path(forResource: lang, ofType: "lproj"),
+              let b = Bundle(path: path) else { return nil } // no bundle/lproj: show source text
         cachedLang = lang
         cachedBundle = b
         return b

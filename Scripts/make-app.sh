@@ -3,6 +3,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 swift build -c release
+# Fail before packaging if the app sources use SwiftPM's Bundle.module accessor (comment lines are
+# ignored). That accessor calls fatalError when the bundle is missing, and the native build system
+# falls back to the build Mac's absolute .build path, so the app crashed on other Macs in en/ja
+# (issue #27). Open the bundle only through ResourceBundleLocator.
+if grep -rnE 'Bundle\.module' Sources/MobiusApp --include='*.swift' | grep -vE '^[^:]+:[0-9]+:[[:space:]]*//'; then
+  echo "ERROR: Sources/MobiusApp uses Bundle.module, which crashes with fatalError on other Macs (issue #27). Use ResourceBundleLocator." >&2
+  exit 1
+fi
 APP=dist/Mobius.app
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
@@ -11,9 +19,31 @@ mkdir -p "$APP/Contents/MacOS"
 # (SettingsView의 Bundle.main.url(forAuxiliaryExecutable: "mobius")가 이 이름에 의존).
 cp .build/release/MobiusApp "$APP/Contents/MacOS/MobiusApp"
 cp .build/release/mobius "$APP/Contents/MacOS/mobius"
-# 다국어 리소스 번들 (Bundle.module이 Contents/Resources에서 찾는다)
+# Localization resource bundle goes to Contents/Resources (L10n finds it via ResourceBundleLocator).
+# Checks 1 and 3 below and the source check above guard against issue #27 (bundle not found, fatalError).
 mkdir -p "$APP/Contents/Resources"
-cp -R .build/release/Mobius_MobiusApp.bundle "$APP/Contents/Resources/"
+RES_BUNDLE="$APP/Contents/Resources/Mobius_MobiusApp.bundle"
+cp -R .build/release/Mobius_MobiusApp.bundle "$RES_BUNDLE"
+# Check 1: the bundle must contain Localizable.strings for each translated language. The layout
+# depends on the build system (swiftbuild: Contents/Resources/<lang>.lproj, native: <lang>.lproj).
+for lang in en ja; do
+  if [ -z "$(find "$RES_BUNDLE" -path "*/$lang.lproj/Localizable.strings" -print -quit)" ]; then
+    echo "ERROR: $RES_BUNDLE has no $lang.lproj/Localizable.strings; the resource bundle is broken." >&2
+    exit 1
+  fi
+  plutil -lint "$(find "$RES_BUNDLE" -path "*/$lang.lproj/Localizable.strings" -print -quit)" >/dev/null
+done
+# Check 3: the executable must not embed the build Mac's absolute .build path (left by the native
+# accessor). `strings | grep -q` is unsafe here: grep exits early, strings dies of SIGPIPE, pipefail
+# turns that into "no match" and the check passes silently. Write to a file and grep that instead.
+STRINGS_OUT=$(mktemp)
+strings "$APP/Contents/MacOS/MobiusApp" > "$STRINGS_OUT"
+if grep -qE '/\.build/[^ ]*Mobius_MobiusApp\.bundle' "$STRINGS_OUT"; then
+  rm -f "$STRINGS_OUT"
+  echo "ERROR: the executable references the resource bundle by its absolute build path; it will break on other Macs." >&2
+  exit 1
+fi
+rm -f "$STRINGS_OUT"
 # 앱 아이콘 (설정창을 열 때 독에 표시됨)
 cp Assets/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 cat > "$APP/Contents/Info.plist" <<'PLIST'
@@ -41,7 +71,9 @@ SIGN_IDENTITY="${MOBIUS_SIGN_IDENTITY:-}"
 IS_DEVID=0
 case "$SIGN_IDENTITY" in "Developer ID Application"*) IS_DEVID=1 ;; esac
 if [ -z "$SIGN_IDENTITY" ]; then
-  DEVID_HASH=$(security find-identity -v -p codesigning | grep "Developer ID Application" | head -1 | awk '{print $2}')
+  # grep returns 1 when nothing matches, and pipefail then kills the script silently. Macs without a
+  # Developer ID certificate must still reach the ad-hoc fallback below.
+  DEVID_HASH=$(security find-identity -v -p codesigning | { grep "Developer ID Application" || true; } | head -1 | awk '{print $2}')
   if [ -n "$DEVID_HASH" ]; then SIGN_IDENTITY="$DEVID_HASH"; IS_DEVID=1; fi
 fi
 if [ -z "$SIGN_IDENTITY" ] && security find-identity -v -p codesigning | grep -q "Mobius Dev Signing"; then
